@@ -41,11 +41,11 @@
 ## Document
 At present, the ccbr mainly includes two functions. The first function is to use the Rego language to detect the kubernetes security baseline, and the second function is a policy management system. The policy management system integrates an Gatekeeper, including functions such as a constraint template, constraint management, and policy management.
 
-1. In the CIS Benchmark test, it is necessary to configure the config file of kubectl of kubernetes. The default location of config is –/.kube/config.
+1. In the CIS Benchmark test, it is necessary to configure the config file of kubectl of kubernetes. The default location of config is ~/.kube/config.
    ```go
     ./ccbr kubernetes --help
    ```
-   ![](pic/1.png)
+   ![](pic/001.png)
 
 2. Cis benchmark Single Item Test
    ```go
