@@ -63,7 +63,7 @@ At present, the ccbr mainly includes two functions. The first function is to use
    ```go
    ./ccbr kubernetes 
    ```
-    ![](pic/4.png)
+    ![](pic/002.png)
 
 ## ccbr policy management system
  The policy management system integrates an Gatekeeper, including functions such as a constraint template, constraint management, and policy management.
