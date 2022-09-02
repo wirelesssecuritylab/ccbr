@@ -3,7 +3,7 @@
 
 </h1>
 
-[![License][liBadge]][liLink]
+[![](https://img.shields.io/badge/license@champyin-brightgreen.svg)](https://github.com/niuzhi/ccbr/LICENSE.txt)
 
 **CCBR is a policy management system project. It uses the policy language Rego to implement the CIS benchmark test of cloud native kubernetes. In addition, it integrates gatekeeper, manages its constraint templates, constraints and policies, and supports policy deployment and audit inspection.**
 
