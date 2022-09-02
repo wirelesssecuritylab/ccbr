@@ -2,10 +2,9 @@
  <img src="pic/ccbr.jpg" align="left" width="100" style="margin-right: 15px">
 
 </h1>
-[![](https://img.shields.io/badge/build@Successful-blue.svg)]({linkUrl)
 
 
-[![](https://img.shields.io/badge/license@Apache-2.0-brightgreen.svg)](https://github.com/niuzhi/ccbr/LICENSE.txt)
+![](https://img.shields.io/badge/Version-V1.0.1-yellowgreen.svg)  ![Go](https://img.shields.io/badge/GO-1.8+-green.svg)  ![](https://img.shields.io/badge/Build-successful-blue.svg)  [![](https://img.shields.io/badge/license@Apache-2.0-brightgreen.svg)](https://github.com/niuzhi/ccbr/LICENSE.txt) 
 
 **CCBR is a policy management system project. It uses the policy language Rego to implement the CIS benchmark test of cloud native kubernetes. In addition, it integrates gatekeeper, manages its constraint templates, constraints and policies, and supports policy deployment and audit inspection.**
 
