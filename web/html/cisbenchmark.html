@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cisbenchmark</title>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/prism.js"></script>
+    <link rel="stylesheet" href="/static/lib/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/css/view.css"/>
+    <link rel="stylesheet" href="/static/css/semantic.min.css"/>
+    <link rel="stylesheet" href="/static/css/prism.css"/>
+    <script src="/static/js/semantic.min.js"></script>
+</head>
+<body>
+<table class="ui striped table">
+    <thead>
+    <tr>
+        <th class="center aligned">ClusterManager</th>
+        <th class="center aligned">PodName</th>
+        <th class="center aligned">CisBenchmarkItem</th>
+        <th class="center aligned">Result</th>
+        <th class="center aligned">Message</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{range .result}}
+    <tr>
+        <td class="center aligned">{{.ClusterManager}}</td>
+        <td class="center aligned">{{.PodName}}</td>
+        <td class="center aligned">{{.CisBenchmarkItem}}</td>
+        {{if eq .Result "[FAIL]"}}
+        <td class="center aligned">
+            <div class="ui red horizontal label">{{.Result}}</div>
+        </td>
+        {{else}}
+        {{if eq .Result "[WARN]"}}
+        <td class="center aligned">
+            <div class="ui olive horizontal label">{{.Result}}</div>
+        </td>
+        {{else}}
+        <td class="center aligned">
+            <div class="ui green horizontal label">{{.Result}}</div>
+        </td>
+        {{end}}
+        {{end}}
+        <td class="center aligned">{{.Message}}</td>
+
+    </tr>
+    {{end}}
+    </tbody>
+</table>
+
+</body>
+</html>
