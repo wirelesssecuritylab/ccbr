@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/prism.js"></script>
+    <link rel="stylesheet" href="/static/lib/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/css/view.css"/>
+    <link rel="stylesheet" href="/static/css/semantic.min.css"/>
+    <link rel="stylesheet" href="/static/css/prism.css"/>
+    <script src="/static/js/semantic.min.js"></script>
+    <title></title>
+</head>
+
+<body class="layui-view-body">
+<div class="layui-content">
+    <div class="layui-row layui-col-space20">
+        {{ $targets := .result.Spec.Targets }}
+        {{ $bypodes := .result.Status.ByPod }}
+        <div class="ui segments" id="{{ .result.Spec.CRD.Spec.Names.Kind }}">
+            {{ $obj := .result.Status.Created}}
+            {{if $obj }}
+            <div class="ui red secondary header segment">
+                {{ .result.Spec.CRD.Spec.Names.Kind }}
+                <span class="ui small horizontal label red">CREATED</span>
+            </div>
+            {{else}}
+            <div class="ui red secondary header segment">
+                <span class="ui small horizontal basic label red" data-tooltip="Gatekeeper unhealthy"
+                      data-variation="tiny">UNKOWN STATE</span>
+            </div>
+            {{end}}
+        </div>
+
+
+        {{ range $targets}}
+        <h5 class="header">Target {{ .Target }}</h5>
+        <div class="ui accordion styled fluid">
+            {{ range .Libs}}
+            <div class="title">
+                <i class="dropdown icon"></i>
+                Libs definition
+            </div>
+            <div class="content">
+                <pre class="line-numbers"><code class="language-rego">{{ . }}</code></pre>
+            </div>
+            {{end}}
+            <div class="title">
+                <i class="dropdown icon"></i>
+                Rego definition
+            </div>
+            <div class="content">
+                <pre class="line-numbers"><code class="language-rego">{{ .Rego }}</code></pre>
+            </div>
+        </div>
+        {{ end }}
+
+
+        <div class="ui segment">
+            <h5>Status</h5>
+            <div class="ui horizontal list">
+                {{ range .result.Status.ByPod }}
+                <div class="item">
+                    <div class="content">
+                        <div class="ui image label">
+                            {{ .ID }}
+                            <div class="detail">GENERATION {{ .ObservedGeneration }}</div>
+
+                        </div>
+                    </div>
+                </div>
+                {{end}}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $('.ui.accordion').accordion();
+</script>
+</body>
+</html>

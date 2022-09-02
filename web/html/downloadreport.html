@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/prism.js"></script>
+    <link rel="stylesheet" href="/static/lib/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/css/view.css"/>
+    <link rel="stylesheet" href="/static/css/semantic.min.css"/>
+    <link rel="stylesheet" href="/static/css/prism.css"/>
+    <script src="/static/js/semantic.min.js"></script>
+    <title> Policy Manager Violations Report</title>
+</head>
+
+<body class="layui-view-body">
+<div class="layui-content">
+    <div class="layui-row layui-col-space20">
+
+        <div class="ui fluid container">
+            <div class="ui attached segments">
+                <h1 class="ui centered top attached header"> Policy Constraints Violations Report</h1>
+                <div class="ui segment">
+                    <table class="ui compact selectable striped table">
+                        <thead>
+                        <tr>
+                            <th>ClusterManager</th>
+                            <th>ConstraintTemplate</th>
+                            <th>Constraint</th>
+                            <th>Action</th>
+                            <th>Kind</th>
+                            <th>Namespace</th>
+                            <th>Name</th>
+                            <th>Message</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{if gt .length 0}}
+                        {{range .result}}
+                        <tr onclick="this.classList.toggle('active');">
+                            <td>{{ .ClusterManager }}</td>
+                            <td>{{ .ConstraintTemplate }}</td>
+                            <td>{{ .Constraint }}</td>
+                            <td><span><font color="red"><b>{{ .Action }}</b></font></span></td>
+                            <td>{{ .Kind }}</td>
+                            <td>{{ .Namespace }}</td>
+                            <td>{{ .Name }}</td>
+                            <td>{{ .Message }}</td>
+                        </tr>
+                        {{end}}
+                        {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

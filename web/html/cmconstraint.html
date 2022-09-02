@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>集群约束</title>
+
+    <link rel="stylesheet" href="/static/lib/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/lib/layui/css/style.css">
+    <link rel="stylesheet" href="/static/css/font.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/view.css"/>
+    <link rel="stylesheet" href="/static/css/prism.css"/>
+    <link rel="stylesheet" href="/static/css/codemirror.css"/>
+    <link rel="stylesheet" href="/static/css/rubyblue.css"/>
+
+</head>
+<body>
+<div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a href="">Violations</a>
+            <a>
+              <cite>集群约束</cite></a>
+          </span>
+
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+</div>
+
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+
+                <div class="layui-card-body layui-table-body layui-table-main">
+
+                    <table id="demo" lay-filter="test"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--每条数据的操作栏-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+
+</script>
+<script src="/static/js/prism.js"></script>
+
+<script src="/static/js/jquery.js"></script>
+<script src="/static/lib/layui/layui.all.js"></script>
+<script src="/static/lib/layui/common.js"></script>
+<script src="/static/js/codemirror.js"></script>
+<script src="/static/js/css.js"></script>
+<script src="/static/js/yaml.js"></script>
+<script src="/static/js/yaml-frontmatter.js"></script>
+
+
+<script>
+    layuiModules = ['table', 'layer', 'form'];
+
+    function mounted() {
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , url: '/cmconstraint/list' //数据接口
+            /*,id: 'tablereload'*/
+            , cellMinWidth: 80
+            , page: false
+            , limit: Number.MAX_VALUE
+            , align: 'center'
+            , cols: [[ //表头
+                {field: 'Clustername', align: 'center', title: 'Cluster Name', width: 400, fixed: 'left'}
+                , {field: 'Constrainttemplatename', align: 'center', title: 'Constrain Ttemplate Name', width: 400}
+                , {field: 'Constraint', align: 'center', title: 'Constraint Name', width: 400}
+                , {fixed: 'right', align: 'center', toolbar: '#barDemo'}
+                , {field: 'File', align: 'center', title: 'File', width: 200, hide: true}
+            ]]
+        });
+
+        //监听工具条
+        table.on('tool(test)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+            var Constrainttemplatename = data.Constrainttemplatename
+            var Constraintname = data.Constraint
+            var File = data.File
+            var Clustername = data.Clustername
+            if (layEvent === 'detail') { //查看
+                window.location.href = '/cmconstraint/detail?Constraintname=' + Constraintname + '&Constrainttemplatename=' + Constrainttemplatename + "&Clustername=" + Clustername
+                /* $.ajax({
+                     url: '/cmconstrainttemplate/detail',
+                     type: 'POST',
+                     data: {
+                         "Clustername": data.Clustername,
+                         "Constrainttemplatename": data.Constrainttemplatename,
+                         "File": data.File
+                     },
+                     success: function (data) {
+                         window.location.href = '/cmconstrainttemplate/detailindex'
+                     }
+                 });
+                 return false;
+ */
+            }
+            form.render();
+        });
+
+    }
+
+</script>
+
+</body>
+</html>

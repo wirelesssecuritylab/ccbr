@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cluster Manager</title>
+
+    <link rel="stylesheet" href="/static/lib/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/lib/layui/css/style.css">
+    <link rel="stylesheet" href="/static/css/font.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/view.css"/>
+    <link rel="stylesheet" href="/static/css/prism.css"/>
+    <link rel="stylesheet" href="/static/css/codemirror.css"/>
+    <link rel="stylesheet" href="/static/css/rubyblue.css"/>
+    <link rel="stylesheet" href="/static/css/material-darker.css"/>
+
+
+</head>
+<body>
+<div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a href="">Cluster Manager</a>
+            <a>
+              <cite>集群管理</cite></a>
+          </span>
+
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+
+                <div class="layui-card-body layui-table-body layui-table-main">
+
+                    <form class="layui-form ">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="Name_cluster" id="Name_cluster" placeholder="请输入集群名称"
+                                           autocomplete="off" class="layui-input">
+                                </div>
+                                <button type="button" class="layui-btn " lay-filter="dosearch" lay-submit=""><i
+                                        class="layui-icon">&#xe615;</i>查询
+                                </button>
+                                <!--  <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>-->
+                            </div>
+                        </div>
+
+                    </form>
+                    <table id="demo" lay-filter="test"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--顶部操作栏-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
+    </div>
+</script>
+<!--每条数据的操作栏-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-blue layui-btn-xs" lay-event="test">测试</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+
+</script>
+<script src="/static/js/prism.js"></script>
+<script type="text/html" id="editDialog">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form id="formedit" action="" method="post" class="layui-form layui-form-pane" lay-filter="editDialogForm">
+                <input type="hidden" id="Id" name="Id" required="" lay-verify="required"
+                       autocomplete="off" class="layui-input">
+                <div class="layui-form-item">
+                    <label for="name" class="layui-form-label">
+                        <span class="x-red"></span>集群名称
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="Name" name="Name" required="" lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                    <label for="name" class="layui-form-label">
+                        <span class="x-red"></span>集群描述
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="Describtion" name="Describtion" required="" lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+
+                    <label for="name" class="layui-form-label">
+                        <span class="x-red"></span>创建时间
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="CreateTime" name="CreateTime" required="" lay-verify="required"
+                               autocomplete="off" class="layui-input" placeholder="yyyy-MM-dd HH:mm:ss">
+                    </div>
+
+                </div>
+                <div class=" layui-form-text">
+                    <label for="name" class="layui-form-label">
+                        kubeconfig code
+                    </label>
+                </div>
+                <div class="layui-form-item layui-form-text">
+
+                    <textarea id="File" name="File" type="text"></textarea>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</script>
+<script type="text/html" id="testDialog">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form id="formtest" action="" method="post" class="layui-form layui-form-pane" lay-filter="testDialogForm">
+                <input type="hidden" name="Id" required="" lay-verify="required"
+                       autocomplete="off" class="layui-input">
+                <div class="layui-form-item">
+                    <label for="name" class="layui-form-label">
+                        <span class="x-red"></span>集群名称
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="Name1" name="Name" required="" lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                    <label class="layui-form-label">
+                        <span class="x-red"></span>测试条目
+                    </label>
+                    <!--  <div class="layui-input-inline">
+                          <input type="text" id="Type" name="Type" required="" lay-verify="required"
+                                 autocomplete="off" class="layui-input">
+                      </div>-->
+                    <div class="layui-input-inline layui-show-xs-block">
+                        <select name="Testitem" id="Testitem">
+                            <option>Kubernetes</option>
+                            <option>Gatekeeper</option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</script>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/lib/layui/layui.all.js"></script>
+<script src="/static/lib/layui/common.js"></script>
+<script src="/static/js/codemirror.js"></script>
+<script src="/static/js/css.js"></script>
+<script src="/static/js/yaml.js"></script>
+<script src="/static/js/yaml-frontmatter.js"></script>
+
+
+<script>
+    layuiModules = ['table', 'layer', 'form'];
+
+    function mounted() {
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , url: '/clustermanager/list' //数据接口
+            , toolbar: '#toolbarDemo'
+            , page: true
+            /*,id: 'tablereload'*/
+            , cellMinWidth: 80
+            , align: 'center'
+            , cols: [[ //表头
+                {field: 'Name', align: 'center', title: 'Cluster Name', width: 200, fixed: 'left'}
+                , {field: 'CreateTime', align: 'center', title: 'CreateTime', width: 180}
+                , {field: 'UpdateTime', align: 'center', title: 'UpdateTime', width: 180}
+                , {field: 'Describtion', align: 'center', title: 'Describtion', width: 300}
+                , {fixed: 'right', align: 'center', toolbar: '#barDemo'}
+                , {field: 'File', title: 'File', hide: true}
+                , {field: 'Id', align: 'center', title: 'Id', width: 80, hide: true}
+            ]]
+            , limit: 10
+            , limits: [10, 20]
+        });
+
+        form.on("submit(dosearch)", function (obj) {
+            var Name = obj.field.Name_cluster;
+            table.reload('demo', {
+                where: {
+                    'Name': Name
+                }, page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+        //监听事件
+        table.on('toolbar(test)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            var editor123;
+            switch (obj.event) {
+                case 'add':
+                    layer.open({
+                        type: 1,
+                        title: '添加',
+                        area: ['60%', '80%'],
+                        content: $('#editDialog').html(), //这里content是一个普通的String
+                        btn: ['确定', '取消'],
+                        success: function (index, layero) {
+                            var layedit = layui.layedit;
+                            //layedit.html()
+
+                            //form.val("File",data.File)
+                            var laydate = layui.laydate;
+                            laydate.render({
+                                elem: '#CreateTime'
+                                , type: 'datetime'
+                            });
+                            var editor = CodeMirror.fromTextArea(document.getElementById('File'), {
+
+                                mode: 'yaml',
+                                lineNumbers: true,     // 显示行数
+                                indentUnit: 1,         // 缩进单位为2
+                                styleActiveLine: true, // 当前行背景高亮
+                                matchBrackets: true,   // 括号匹配
+                                lineWrapping: true,    // 自动换行
+                                tabSize: 2,
+                                line: true,
+                                styleActiveLine: true,
+                                theme: "rubyblue",
+                            });
+                            editor123 = editor;
+                            form.render('');
+                            /* editor.setValue($("#File").val());*/
+
+                        },
+                        yes: function (index, layero) {
+                            var content = editor123.getValue();
+                            if ($('#Name').val() == '') {
+                                layer.msg("Name is not null!");
+                                return false;
+                            }
+                            if (content == '') {
+                                layer.msg("Code is not null!");
+                                return false;
+                            }
+                            if ($('#CreateTime').val() == '') {
+                                layer.msg("CreateTime is not null!");
+                                return false;
+                            }
+                            $.ajax({
+                                url: '/clustermanager/save',
+                                type: 'POST',
+                                data: {
+                                    "Name": $('#Name').val(),
+                                    "Describtion": $('#Describtion').val(),
+                                    "File": content,
+                                    "CreateTime": $('#CreateTime').val()
+                                },
+                                success: function (data) {
+                                    layer.msg(data["msg"], {time: 3000});
+                                    layer.closeAll();
+                                    layui.table.reload('demo')
+                                },
+                                error: function () {
+                                    layer.msg(data["msg"], {time: 3000});
+                                }
+                            });
+                            return false
+
+                        },
+                        btn2: function (index, layero) {
+                            //return false 开启该代码可禁止点击该按钮关闭
+                            layer.closeAll()
+                        }
+                    });
+                    break;
+                case 'delete':
+                    console.log(checkStatus);
+                    layer.confirm('真的删除选中行么', function (index) {
+                        layer.close(index);
+                        //向服务端发送删除指令
+                    });
+                    break;
+            }
+        });
+
+        //监听工具条
+        table.on('tool(test)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+            var editor456;
+            if (layEvent === 'test') { //查看
+                layer.open({
+                    type: 1,
+                    title: '环境测试',
+                    area: ['40%', '60%'],
+                    content: $('#testDialog').html(), //这里content是一个普通的String
+                    btn: ['开始测试', '取消测试'],
+                    success: function (index, layero) {
+                        form.val("testDialogForm", data);
+                        form.render();
+
+                    },
+
+                    yes: function (index, layero) {
+                        layer.open({
+                            type: 1,
+                            title: '测试结果',
+                            area: ['60%', '80%'],
+                            content: ' <div class="layui-card-body layui-table-body layui-table-main"><table id="testtable"></table></div>', //这里content是一个普通的String
+                            success: function (index, layero) {
+                                layui.table.render({
+                                    elem: '#testtable'
+                                    ,
+                                    url: '/clustermanager/test'
+                                    ,
+                                    method: 'post'
+                                    ,
+                                    where: {
+                                        "Name": $('#Name1').val(),
+                                        "Testitem": $('#Testitem').val(),
+                                        "File": data.File
+                                    }
+                                    , page: false
+                                    , cols: [[
+                                        {field: 'Name', title: 'Name', fixed: 'left'}
+                                        , {field: 'Version', title: 'Kubernetes Version'}
+                                        , {field: 'Namespace', title: 'Namespace'}
+                                        , {field: 'Pod', title: 'Pod', width: 300}
+                                        , {field: 'Status', title: 'Status'}
+                                    ]]
+                                    , done: function (res) {
+                                        if (res.data[0].Version == "") {
+                                            $("[data-field='Version']").css('display', 'none')
+                                        }
+
+                                        layui.table.render();
+                                        layer.msg(res.msg, {icon: 1, skin: 'lay-msg-bg', time: 6000});
+                                    }
+                                    , error: function (res) {
+                                        layer.msg(res.msg, {icon: 2, skin: 'lay-msg-bg', time: 6000});
+                                    }
+                                });
+
+
+                            },
+
+                        });
+                    },
+                    btn2: function (index, layero) {
+                        //return false 开启该代码可禁止点击该按钮关闭
+                        layer.closeAll()
+                    }
+                });
+                form.render();
+
+            } else if (layEvent === 'del') { //删除
+                layer.confirm('真的删除行么', function (index) {
+                    $.ajax({
+                        url: '/clustermanager/delete',
+                        type: 'POST',
+                        data: {"Id": data.Id},
+                        success: function (data) {
+                            layer.msg(data["msg"], {time: 3000});
+                            layer.closeAll();
+                            layui.table.reload('demo')
+
+
+                        },
+                        error: function () {
+                            layer.msg(data["msg"], {time: 3000});
+                        }
+                    });
+                    return false
+
+
+                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                    layer.close(index);
+                    //向服务端发送删除指令
+                });
+            } else if (layEvent === 'edit') { //编辑
+                layer.open({
+                    type: 1,
+                    title: '编辑',
+                    area: ['80%', '80%'],
+                    content: $('#editDialog').html(), //这里content是一个普通的String
+                    btn: ['确定', '取消'],
+                    success: function (index, layero) {
+                        form.val("editDialogForm", data);
+                        var layedit = layui.layedit;
+                        var laydate = layui.laydate;
+                        laydate.render({
+                            elem: '#CreateTime'
+                            , type: 'datetime'
+                        });
+                        var editor1 = CodeMirror.fromTextArea(document.getElementById('File'), {
+
+                            mode: 'yaml',
+                            lineNumbers: true,     // 显示行数
+                            indentUnit: 1,         // 缩进单位为2
+                            styleActiveLine: true, // 当前行背景高亮
+                            matchBrackets: true,   // 括号匹配
+                            lineWrapping: true,    // 自动换行
+                            tabSize: 2,
+                            line: true,
+                            styleActiveLine: true,
+                            theme: "rubyblue",
+                        });
+                        editor456 = editor1;
+                        form.render();
+
+                    },
+
+                    yes: function (index, layero) {
+                        var content = editor456.getValue();
+                        if ($('#Name').val() == '') {
+                            layer.msg("Name is not null!");
+                            return false;
+                        }
+                        if (content == '') {
+                            layer.msg("Code is not null!");
+                            return false;
+                        }
+                        if ($('#CreateTime').val() == '') {
+                            layer.msg("CreateTime is not null!");
+                            return false;
+                        }
+
+                        $.ajax({
+                            url: '/clustermanager/update',
+                            type: 'POST',
+                            data: {
+                                "Name": $('#Name').val(),
+                                "Id": $('#Id').val(),
+                                "Describtion": $('#Describtion').val(),
+                                "File": content
+                            },
+                            success: function (data) {
+                                layer.msg(data["msg"], {time: 3000});
+                                layer.closeAll();
+                                layui.table.reload('demo')
+                            },
+                            error: function () {
+                                layer.msg(data["msg"], {time: 3000});
+                            }
+                        });
+                        return false
+                    },
+                    btn2: function (index, layero) {
+                        //return false 开启该代码可禁止点击该按钮关闭
+                        layer.closeAll()
+                    }
+                });
+                form.render();
+
+                /* //同步更新缓存对应的值
+                 obj.update({
+                     username: '123'
+                     , title: 'xxx'
+                 });*/
+            }
+            form.render();
+        });
+
+    }
+
+</script>
+
+</body>
+</html>

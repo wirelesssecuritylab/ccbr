@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/prism.js"></script>
+    <link rel="stylesheet" href="/static/lib/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/css/view.css"/>
+    <link rel="stylesheet" href="/static/css/semantic.min.css"/>
+    <link rel="stylesheet" href="/static/css/prism.css"/>
+    <script src="/static/js/semantic.min.js"></script>
+    <title></title>
+</head>
+
+<body class="layui-view-body">
+<div class="layui-content">
+    <div class="layui-row layui-col-space20">
+        <div class="ui segments">
+            <div class="ui  red  label">
+                <div><span style="margin-right: 1em;">{{.result.Metadata.Name}}</span>
+                </div>
+            </div>
+
+            <div class=" ui orange label">VIOLATIONS
+                <div class="detail">{{ .result.Status.TotalViolations }}
+                </div>
+            </div>
+            <div class="ui grey label">
+                MODE
+                <div class="detail">deny</div>
+            </div>
+            <a class="ui primary label" href="">TEMPLATE
+                <div class="detail">{{ .result.Kind }}</div>
+            </a>
+            <div class="ui grey label">CREATED ON
+                <div class="detail">{{.result.Metadata.CreationTimestamp}}</div>
+            </div>
+        </div>
+        {{if gt .result.Status.TotalViolations 0}}
+        <div class="ui segment">
+            <table class="ui compact selectable striped table">
+                <thead>
+                <tr>
+                    <th colspan="5"><i class="red exclamation circle icon"></i> Violations</th>
+                </tr>
+                <tr>
+                    <th>Action</th>
+                    <th>Kind</th>
+                    <th>Namespace</th>
+                    <th>Name</th>
+                    <th>Message</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{range .result.Status.Violations}}
+                <tr onclick="this.classList.toggle('active');">
+                    <td>{{ .EnforcementAction }}</td>
+                    <td>{{ .Kind }}</td>
+                    <td>{{ .Namespace }}</td>
+                    <td>{{ .Name }}</td>
+                    <td>{{ .Message }}</td>
+                </tr>
+                {{end}}
+                </tbody>
+            </table>
+            {{ if gt .result.Status.TotalViolations (.result.Status.Violations| len)}}
+            <div class="ui warning small icon message">
+                <i class="exclamation triangle icon"></i>
+                <div class="content">
+                    <div class="header">Not all violations are being shown</div>
+                    Gatekeeper's configuration is limiting the audit violations per constraint to
+                    {{.result.Status.Violations|len}}. See Gatekeeper's <span style="font-family: monospace">--constraint-violations-limit</span>
+                    audit configuration flag.
+                </div>
+            </div>
+            {{end}}
+        </div>
+        {{else}}
+        <div class="ui segment">There are no violations for this Constraint
+        </div>
+        {{end}}
+        {{range .result.Spec.Match.Kinds}}
+        <div class="ui segment">
+            <h5>Match criteria</h5>
+            <div class="ui horizontal very relaxed divided list">
+                <div class="top aligned item">
+                    <div class="header">Kinds</div>
+                    <div class="content">
+                        <div class="ui horizontal relaxed list">
+                            <div class="top aligned item">
+                                <div class="header">API Groups</div>
+                                {{range .ApiGroups}}
+                                <div class="content">
+                                    {{ . }}
+                                </div>
+                                {{end}}
+                            </div>
+                            <div class="top aligned item">
+                                <div class="header">Kinds</div>
+                                {{range .Kinds}}
+                                <div class="content">
+                                    {{ . }}
+                                </div>
+                                {{end}}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{end}}
+
+        <div class="ui secondary segment">
+            <h5>Status at {{ .result.Status.AuditTimestamp }}</h5>
+            <div class="ui horizontal list">
+
+                {{range .result.Status.ByPod}}
+                <div class="item">
+                    <div class="content">
+                        <div class="ui image label" data-tooltip="Constraint is  being ENFORCED by this POD"
+                             data-variation="tiny">
+                            {{if eq .Enforced true}}
+                            {{else}}
+                            {{end}}
+                            {{ .Id }}
+                            <div class="detail">GENERATION {{ .ObservedGeneration }}</div>
+                        </div>
+                    </div>
+                </div>
+                {{end}}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
