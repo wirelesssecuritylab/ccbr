@@ -1,0 +1,217 @@
+.parentTop{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 60px;
+    background-color: #393D49;
+}
+
+.appName{
+    color: white;
+    margin-left: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 60px;
+}
+
+.loginNameDiv{
+    position: absolute;
+    right: 20px;
+    top: 0;
+    font-size: 0;
+    height: 60px;
+}
+
+.loginIcon{
+    width: 40px;
+    height: 40px;
+    vertical-align: top;
+    margin-top: 10px;
+}
+
+.loginUserInfo{
+    font-size: 15px;
+    color: white;
+    margin-left: 15px;
+    margin-top: 12px;
+    display: inline-block;
+}
+
+.leftMenu{
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 200px;
+    bottom: 0;
+    background-color: #393D49;
+}
+
+.dialogMenu{
+    width: 130px;
+    position: absolute;
+    top: 60px;
+    background-color: white;
+    right: 0;
+    border: 1px solid #dddddd;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.12);
+    border-bottom: none;
+    display: none;
+}
+
+.dialogMenu .dialogMenu-item{
+    padding: 15px 0;
+    text-align: center;
+    border-bottom: 1px solid #dddddd;
+}
+
+.parentMain{
+    position: absolute;
+    top: 60px;
+    right: 0;
+    bottom:0;
+    left: 200px;
+    padding: 20px 0 0 20px;
+}
+
+.parentMain iframe{
+    width: 100%;
+    height: 98%;
+    border-width:0;
+}
+
+.topGrid{
+    font-size: 0;
+}
+
+.topGrid .itemWrapper{
+    width: 25%;
+    display: inline-block;
+}
+
+.topGrid .item{
+    color: white;
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 6px;
+    margin-right: 10px;
+}
+
+.topGrid .item .name{
+    margin-bottom: 10px;
+}
+
+.topGrid .item .number{
+    font-size: 30px;
+}
+
+.topGrid .itemWrapper:nth-child(1) .item{
+    background-color: #1BC98E;
+}
+
+.topGrid .itemWrapper:nth-child(2) .item{
+    background-color: #E64758;
+}
+
+.topGrid .itemWrapper:nth-child(3) .item{
+    background-color: #9F85FF;
+}
+
+.topGrid .itemWrapper:nth-child(4) .item{
+    background-color: #E5D936;
+}
+
+#mountNode{
+    margin-top: 20px;
+}
+
+.upload-image-list{
+    display: flex;
+    padding: 15px;
+    flex-wrap: wrap;
+}
+
+.upload-image-list .item{
+    margin-right: 8px;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.upload-image-list .delItem{
+    margin-right: 8px;
+    position: relative;
+    display: none;
+}
+
+.upload-image-list .item .image{
+    width: 100px;
+    height: 100px;
+}
+
+.upload-image-list .item .delete{
+    position: absolute;
+    background-color: rgba(0,0,0,0.5);
+    right: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+}
+
+.upload-image-list .addDiv{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #cccccc;
+    width: 100px;
+    height: 100px;
+}
+
+.upload-image-list .addDiv img{
+    display: flex;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    justify-content: center;
+}
+
+.login-div{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    border-radius: 5px;
+}
+
+.login-div h1{
+    margin-bottom: 30px;
+}
+
+.login-div form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-div .login-form-item{
+    margin-bottom: 20px;
+}
+
+.login-div .login-form-item input{
+    width: 300px;
+    height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 3px;
+    border: 1px solid #CCCCCC;
+}
+
+.login-div form .btn-login{
+    height: 40px;
+    width: 320px;
+    background-color: #009688;
+    border: none;
+    color: white;
+    border-radius: 3px;
+}
