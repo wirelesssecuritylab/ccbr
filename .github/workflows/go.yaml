@@ -1,0 +1,22 @@
+name: CCBR build
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up GO 1.18
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.18
+        id: go
+
+      - name: Check out source code
+        uses: actions/checkout@main
+
+      - name: Build
+        run: go build .
