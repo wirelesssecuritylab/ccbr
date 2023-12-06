@@ -58,6 +58,7 @@ var kubernetesCmd = &cobra.Command{
 }
 
 func inputArgsCheck(inputArgs string) bool {
+	//k8s配置文件解析
 	fileInfoList, err := ioutil.ReadDir("./rego/kubernetes/")
 	if err != nil {
 		log.Fatal(err)
